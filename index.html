@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing B1 · CAA</title>
+<meta name="description" content="Eight guided writing units, about 30 minutes each: from complete sentences to an opinion paragraph.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f4fd1'/%3E%3Cpath d='M18 46l4-12 20-20 8 8-20 20z' fill='%23f2b705'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="assets/style.css?v=7">
+</head>
+<body>
+<header class="topbar"><div class="wrap">
+  <div class="unit-name">CAA Writing Lab</div>
+  <span class="lvl">Writing B1</span>
+</div></header>
+
+<div class="wrap">
+  <section class="home-hero">
+    <div class="eyebrow">From great paragraphs to great essays · 8 units</div>
+    <h1>Writing B1</h1>
+    <p class="lead">Each unit takes 30–45 minutes and guides you step by step to a <b>final product</b>: a text that you write, check and hand in.</p>
+    <div class="how">
+      <div><b>1 · Get ready</b>Read a model.</div>
+      <div><b>2–3 · Focus</b>Practice grammar and punctuation. The answers are checked automatically.</div>
+      <div><b>4 · Plan</b>Organize your ideas.</div>
+      <div><b>5 · Write & check</b>Write your text and get an automatic score with tips.</div>
+    </div>
+  </section>
+  <section class="units" id="units" aria-label="Units"></section>
+  <p class="muted small" style="padding-bottom:40px">Your progress is saved in this browser.</p>
+</div>
+
+<script src="assets/config.js?v=7"></script>
+<script src="assets/units.js?v=7"></script>
+<script>
+(function () {
+  var box = document.getElementById("units");
+  window.GW_UNITS.forEach(function (u) {
+    var total = 0, st = {};
+    u.steps.forEach(function (s) { total += s.acts.length; });
+    try { st = JSON.parse(localStorage.getItem((window.GW_CONFIG.storagePrefix || "gw1:") + "u" + u.n)) || {}; } catch (e) { /* ignore */ }
+    var done = st.acts ? Object.keys(st.acts).length : 0;
+    var g = null;
+    if (st.write && st.write.rubric) {
+      var r = st.write.rubric.s / st.write.rubric.m;
+      g = st.write.acc == null ? r * 10 : r * 7 + st.write.acc / 5 * 3;
+    }
+    var a = document.createElement("a");
+    a.className = "ucard"; a.href = "unit.html?u=" + u.n;
+    a.innerHTML =
+      '<span class="num">UNIT ' + u.n + (u.level ? ' <span class="lvl-tag">' + u.level + '</span>' : '') + '</span><h2></h2><span class="focus"></span>' +
+      '<span class="prod"><b>Final product:</b> <span></span></span>' +
+      '<span class="meta"><span class="bar"><span style="width:' + Math.round(done / total * 100) + '%"></span></span>' +
+      '<span>' + (done ? done + "/" + total : "≈ " + u.steps.reduce(function (n, s) { return n + (s.min || 0); }, 0) + " min") + '</span>' + (g == null ? "" : '<span class="badge">' + (Math.round(g * 10) / 10).toFixed(1) + '/10</span>') + '</span>';
+    a.querySelector("h2").textContent = u.title;
+    a.querySelector(".focus").textContent = u.focus;
+    a.querySelector(".prod span").textContent = u.product;
+    box.appendChild(a);
+  });
+})();
+</script>
+</body>
+</html>
